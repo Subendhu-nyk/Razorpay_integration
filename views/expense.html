@@ -282,6 +282,7 @@ document.getElementById('premiumbtn').onclick = async function (e) {
                 document.getElementById('premiumbtn').style.visibility="hidden";
                 document.getElementById('message').innerHTML="You are a premium user"
                 document.getElementById('message').style.color='white'
+                localStorage.setItem('token',res.data.token)
             
             },
         };
