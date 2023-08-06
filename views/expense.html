@@ -179,6 +179,7 @@ async function showdetails() {
         const ispremiumuser=decodeToken.ispremiumuser
         if(ispremiumuser){
             showPremiumUserMessage()
+            showLeaderboard()
         }
         console.log(decodeToken)
         const response = await axios.get('http://localhost:2000/user/get-expense',{headers:{"Authorization":token}});
@@ -262,6 +263,24 @@ async function updateExpense() {
 
 showdetails();
 
+function showLeaderboard(){
+    const inputElement=document.createElement('input')
+    inputElement.type="button"
+    inputElement.value="Show Leaderboard"
+    inputElement.style.marginTop="30px"
+    inputElement.onclick=async()=>{
+        const token=localStorage.getItem('token')
+        const userLeaderBoardArray=await axios.get('http://localhost:2000/premium/showLeaderBoard', { headers: { "Authorization": token } })
+    console.log(userLeaderBoardArray)
+    var leaderboardElem=document.getElementById('leaderboard')
+    leaderboardElem.innerHTML+=`<h1>Leader Board</h1>`
+    userLeaderBoardArray.data.forEach((userDetails)=>{
+        leaderboardElem.innerHTML+=`<li>Name -${userDetails.name} Total Expense - ${userDetails.total_cost}</li>`
+    })
+    }
+    document.getElementById('showlist').appendChild(inputElement)
+}
+
 
 
 document.getElementById('premiumbtn').onclick = async function (e) {
@@ -283,7 +302,7 @@ document.getElementById('premiumbtn').onclick = async function (e) {
                 document.getElementById('message').innerHTML="You are a premium user"
                 document.getElementById('message').style.color='white'
                 localStorage.setItem('token',res.data.token)
-            
+                showLeaderboard()
             },
         };
         const rzp1 = new Razorpay(options); // Corrected variable name from "rzpn1" to "rzp1"

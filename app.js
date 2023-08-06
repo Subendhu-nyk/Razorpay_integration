@@ -11,6 +11,8 @@ const bodyParser=require('body-parser')
 const router=require('./routes/expense')
 const userRoutes = require('./routes/user')
 const purchaseRoutes = require('./routes/purchase')
+const premiumFeatureRoutes = require('./routes/premiumFeatures')
+
 app.use(express.json());
 const cors=require('cors')
 app.use(cors())
@@ -22,6 +24,7 @@ dotenv.config();
 app.use(router)
 app.use('/user', userRoutes)
 app.use('/purchase', purchaseRoutes)
+app.use('/premium', premiumFeatureRoutes)
 
 
 User.hasMany(Expense);
