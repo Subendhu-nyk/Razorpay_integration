@@ -1,5 +1,6 @@
 const Razorpay = require('razorpay');
 const Order = require('../models/orders')
+const userController = require('./user')
 
 const purchasepremium =async (req, res) => {
     try {
@@ -43,20 +44,21 @@ const updateTransactionStatus = async (req, res) => {
         Promise.all([promise1, promise2]).then(() => {
             return res.status(202).json({
                 success: true,
-                message: "Transaction Successful"
+                message: "Transaction Successful",
+                token: userController.generateAccessToken(userId,undefined , true)
                 
             });
         }).catch((error) => {
             console.error("Error during Promise.all:", error);
-            return res.status(500).json({ message: "Something went wrong", error: error });
+            // return res.status(500).json({ message: "Something went wrong", error: error });
         });
     } catch (err) {
         console.error("Error in updateTransactionStatus:", err);
-        res.status(500).json({ message: "Something went wrong", error: err });
+        res.status(403).json({ message: "Something went wrong", error: err });
     }
 };
 
 module.exports = {
-    purchasepremium:purchasepremium,
-    updateTransactionStatus:updateTransactionStatus
+    purchasepremium,
+    updateTransactionStatus
 }
