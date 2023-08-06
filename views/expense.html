@@ -276,9 +276,10 @@ function showLeaderboard(){
         const userLeaderBoardArray=await axios.get('http://localhost:2000/premium/showLeaderBoard', { headers: { "Authorization": token } })
     console.log(userLeaderBoardArray)
     var leaderboardElem=document.getElementById('leaderboard')
+    leaderboardElem.innerHTML = '';
     leaderboardElem.innerHTML+=`<h1>Leader Board</h1>`
     userLeaderBoardArray.data.forEach((userDetails)=>{
-        leaderboardElem.innerHTML+=`<li>Name -${userDetails.name} Total Expense - ${userDetails.total_cost}</li>`
+        leaderboardElem.innerHTML+=`<li>Name -${userDetails.name} Total Expense - ${userDetails.totalExpenses}</li>`
     })
     }
     document.getElementById('showlist').appendChild(inputElement)

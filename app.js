@@ -33,13 +33,15 @@ Expense.belongsTo(User);
 User.hasMany(Order);
 Order.belongsTo(User);
 
-sequelize.sync()
-    .then(() => {
-        app.listen(2000);
-    })
-    .catch(err => {
-        console.log(err);
-    })
+
+sequelize.sync({ alter: true })
+  .then(() => {
+    app.listen(2000);
+    console.log('Database schema updated.');
+  })
+  .catch((err) => {
+    console.error('Error updating database schema:', err);
+  });
 
 
 

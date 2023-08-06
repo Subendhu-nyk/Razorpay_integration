@@ -1,8 +1,15 @@
 const Sequelize = require('../models/expense');
+const User = require('../models/user');
+const sequelize=require('../util/expense')
+
+
+
 
 exports.postExpense=async (req, res) => {
   console.log("id fetch>>>>>>>>>>"+ req.user)
     try {
+
+      const  t=await sequelize.transaction();
 
       const name = req.body.name;
       const price = req.body.price;
@@ -15,14 +22,22 @@ exports.postExpense=async (req, res) => {
         price: price,
         date:date,
         category: category,
-        userId:req.user.id
-    
-        
-       
-      });        
-      res.status(201).json({ newexpenseDetail: data });
+        userId:req.user.id       
+      },{
+        transaction:t
+      }
+      );   
+      const totalExpense=Number(req.user.totalExpenses)+Number(price)     
+      console.log("totalExpense>>>",totalExpense)
+      User.update({
+        totalExpenses:totalExpense
+      },{where:{id:req.user.id},transaction:t})
+     await t.commit()
+      res.status(201).json({ Expense: totalExpense });
     } catch (err) { 
-      console.log("error"+err)      
+
+      console.log("error"+err) 
+    await  t.rollback()     
     res.status(500).json({ error: err }) 
     }
   }
