@@ -29,6 +29,7 @@
           <a class="navbar-brand fs-1" href="#">Expense Tracker</a>
           <div class="collapse navbar-collapse justify-content-end" id="navbarTogglerDemo03">
             <div class="d-flex"> 
+                <div id="message"></div>
                 <button class="btn btn-outline-success me-4" id="premiumbtn">Buy Premium</button>             
               <button class="btn btn-outline-warning me-4" onclick="LogOut(event)">Log Out</button>
             </div>
@@ -253,6 +254,10 @@ document.getElementById('premiumbtn').onclick = async function (e) {
                 }, { headers: { "Authorization": token } })
 
                 alert('You are a Premium user now')
+                document.getElementById('premiumbtn').style.visibility="hidden";
+                document.getElementById('message').innerHTML="You are a premium user"
+                document.getElementById('message').style.color='white'
+            
             },
         };
         const rzp1 = new Razorpay(options); // Corrected variable name from "rzpn1" to "rzp1"
